@@ -50,7 +50,7 @@
 		public function getPassword(){
 			return $this -> password;
 		}
-		
+
 		//user id setter
 		public function setUserId($user_id){
 			$this -> user_id = $user_id;
@@ -65,8 +65,11 @@
 			$fn = $this->first_name;
 			$ln=$this->last_name;
 			$city=$this->city_name;
+			$uname = $this->username;
+			$this -> hashPassword();
+			$pass = hashPassword();
 			$conn =new DBConnector;
-			$res = mysqli_query($conn->conn,"INSERT INTO user(first_name,last_name,user_city) VALUES ('$fn','$ln','$city')") or die ("Error" .mysql_error());
+			$res = mysqli_query($conn->conn,"INSERT INTO user(first_name,last_name,user_city,username,password) VALUES ('$fn','$ln','$city','$uname','$pass')") or die ("Error" .mysql_error());
 			return $res;
 		}
 
