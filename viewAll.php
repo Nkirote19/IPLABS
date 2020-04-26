@@ -15,7 +15,10 @@
         $first_name=0;
         $last_name=0;
         $city=0;
-        $user = new User($first_name,$last_name,$city);
+        //i've added username and password so that i can meet the no. of variables needed in the construct
+        $username=0;
+        $password=0;
+        $user = new User($first_name,$last_name,$city,$username,$password);
         $res = $user -> readAll();
 
         echo '
@@ -24,13 +27,13 @@
                 <div class="card" style="margin-left:40%!important;margin-top:0%!important;">
                     <div class="card-content">
                         <a class="waves-effect waves-light btn-small" href="Homepage.php"><i class="material-icons left">navigate_before</i></a>
-                        <h6 align="center"><b>Current Users in DataBase</b></h6>
+                        <h6 align="center"><b>Current Users</b></h6>
                             <table align="center"style="width:100%!important;"> 
                         <tr> 
-                          <td> <font face="Arial"><b>user_id</b></font> </td> 
-                          <td> <font face="Arial"><b>first_name</b></font> </td> 
-                          <td> <font face="Arial"><b>last_name</b></font> </td> 
-                          <td> <font face="Arial"><b>user_city</b></font> </td> 
+                          <td> <font face="Arial"><b>UserID</b></font> </td> 
+                          <td> <font face="Arial"><b>First Name</b></font> </td> 
+                          <td> <font face="Arial"><b>Last Name</b></font> </td> 
+                          <td> <font face="Arial"><b>City</b></font> </td> 
                         </tr>
                     </div>                    
                 </div>
