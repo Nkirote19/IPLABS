@@ -100,7 +100,7 @@
 			$fn = $this->first_name;
 			$ln = $this->last_name;
 			$city = $this->city_name;
-			if($if == "" || $ln == "" $city == ""){
+			if($if == "" || $ln == "" || $city == ""){
 				return false;
 			}
 			return true;

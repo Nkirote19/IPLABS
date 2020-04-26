@@ -73,8 +73,21 @@
 				<tr>
 					<td><i class="material-icons left">add_location</i>City Name:</td> <td><input type="text" name="city_name" placeholder="City"/></td>
 				</tr>
+
+				<tr>
+					<td><i class="material-icons left">assignment_ind</i>Username:</td> <td><input type="text" name="username" placeholder="Username"/></td>
+				</tr>	
+
+				<tr>
+					<td><i class="material-icons left">https</i>Password:</td> <td><input type="password" name="password" placeholder="Password"/></td>
+				</tr>		
+
 				<tr>
 					<td ><button class="waves-effect waves-light btn" type="submit" name="btn-save"><i class="material-icons left">person_add</i><strong>SAVE</strong></button></td>					
+				</tr>
+
+				<tr>
+					<td><a href = "login.php">LogIn</td>
 				</tr>
 			</table>
 		</form>
