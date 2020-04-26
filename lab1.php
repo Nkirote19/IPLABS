@@ -38,7 +38,7 @@
 			<div class="col s12 m9"> 
 				<div class="card" style="margin-left:40%!important;margin-top:10%!important;">			
 			
-		<form method="post" action="<?=$_SERVER['PHP_SELF']?>">
+		<form method="post" name="user_details" id="user_details" onsubmit="return validateForm()" action="<?=$_SERVER['PHP_SELF']?>">
 			<a class="waves-effect waves-light btn-small" href="Homepage.php"><i class="material-icons left">navigate_before</i></a>
 			<p class="card-title center"><b>User's Details Form</b></p>
 			<table align="center"style="width:80%!important;">
@@ -61,6 +61,7 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript" src="validate.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 
 	</body>
