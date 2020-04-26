@@ -3,7 +3,7 @@
 	include "authenticator.php";
 	include_once "DBConnector.php";
 
-	class User implements Crud{
+	class User implements Crud, authenticator{
 		private $user_id;
 		private $first_name;
 		private $last_name;
@@ -109,6 +109,46 @@
 		public function createFormErrorSessions(){
 			session_start();
 			$_SESSION['form_errors']="All fields are required";
+		}
+
+		public function hashPassword(){
+			//inbuilt function password_hash hashes our password
+			$this -> password = password_hash($this-> passord, PASSWORD_DEFAULT);
+		}
+
+		public function isPassWordCorrect(){
+			$conn = new DBConnector;
+			$found = false;
+			$res = mysqli_query($conn->conn,"SELECT * FROM user") or die ("Error" .mysql_error());
+
+			while ($row = mysqli_fetch_array($res)){
+				if(password_verify($this -> getPassword(), $row['password']) && $this -> getUsername() == $row['username']){
+					$found = true;
+				}
+			}
+			//close DB Connection
+			$conn -> closeDatabase();
+			return $found;
+			//return true;
+		}
+
+		public function login(){
+			if ($this -> isPasswordCorrect()){
+				//password is correct, so we load the protected page
+				header("Location:private_page.php");
+			}
+		}
+
+		public function createUserSession(){
+			session_start();
+			$_SESSION['username'] = $this -> getUsername();
+		}
+
+		public function logout(){
+			session_start();
+			unset($_SESSION['username']);
+			session_destroy();
+			header("Location:lab1.php");
 		}
 
 	}
