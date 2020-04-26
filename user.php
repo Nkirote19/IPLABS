@@ -57,5 +57,21 @@
 			return null;
 		}
 
+		public function valiteForm(){
+			//return true if the values are not empty
+			$fn = $this->first_name;
+			$ln = $this->last_name;
+			$city = $this->city_name;
+			if($if == "" || $ln == "" $city == ""){
+				return false;
+			}
+			return true;
+		}
+
+		public function createFormErrorSessions(){
+			session_start();
+			$_SESSION['form_errors']="All fields are required";
+		}
+
 	}
 ?>

@@ -14,8 +14,13 @@
 		//create user object
 		//Note how we create the object using constructor that will be used to initialize your variables
 		$user = new User($first_name,$last_name,$city);
-		$res = $user -> save();
+		if(!$user->valiteForm()){
+			$user->createFormErrorSessions();
+			header("Refresh:0");
+			die();
+		}
 
+		$res = $user -> save();
 		//We check if the operation save occurred successfully
 		if ($res){
 			echo "Save operation was successful";
@@ -30,6 +35,7 @@
 		<title>New User</title>
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+	    <link rel="stylesheet" type="text/css" href="validate.css">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
 	
@@ -42,6 +48,20 @@
 			<a class="waves-effect waves-light btn-small" href="Homepage.php"><i class="material-icons left">navigate_before</i></a>
 			<p class="card-title center"><b>User's Details Form</b></p>
 			<table align="center"style="width:80%!important;">
+				<tr>
+					<td>
+						<div id="form_errors">
+							<?php
+								session_start();
+								if(!empty($_SESSION['form_errors'])){
+									echo " " . $_SESSION['form_errors'];
+									unset($_SESSION['form_errors']);
+								}
+							?>
+						</div>
+					</td>
+				</tr>
+
 				<tr>
 					<td><i class="material-icons left">person</i>First Name:</td> <td><input type="text" name="first_name" required placeholder="First Name"/></td>
 				</tr>
