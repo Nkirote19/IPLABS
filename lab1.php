@@ -41,13 +41,13 @@
 	
 	<body style="background-image:url('https://video-images.vice.com/articles/5d44c9622980b0000824a7e3/lede/1564789576071-GettyImages-949118068.jpeg?crop=1xw:0.8419xh;0xw,0.1581xh');background-size: cover;">
 		<div class="row">
-			<div class="col s12 m9"> 
-				<div class="card" style="margin-left:40%!important;margin-top:10%!important;">			
+			<div class="col s12 m11"> 
+				<div class="card" style="margin-left:10%!important;margin-top:10%!important;">			
 			
 		<form method="post" name="user_details" id="user_details" onsubmit="return validateForm()" action="<?=$_SERVER['PHP_SELF']?>">
 			<a class="waves-effect waves-light btn-small" href="Homepage.php"><i class="material-icons left">navigate_before</i></a>
 			<p class="card-title center"><b>User's Details Form</b></p>
-			<table align="center"style="width:80%!important;">
+			<table align="center"style="width:95%!important;">
 				<tr>
 					<td>
 						<div id="form_errors">
@@ -64,27 +64,30 @@
 
 				<tr>
 					<td><i class="material-icons left">person</i>First Name:</td> <td><input type="text" name="first_name" required placeholder="First Name"/></td>
-				</tr>
-
-				<tr>
 					<td><i class="material-icons left">person</i>Last Name:</td> <td><input type="text" name="last_name" placeholder="Last Name"/></td>
-				</tr>
-
-				<tr>
 					<td><i class="material-icons left">add_location</i>City Name:</td> <td><input type="text" name="city_name" placeholder="City"/></td>
 				</tr>
 
+				<!--<tr>
+					<td><i class="material-icons left">person</i>Last Name:</td> <td><input type="text" name="last_name" placeholder="Last Name"/></td>
+				</tr>
+				<tr>
+					<td><i class="material-icons left">add_location</i>City Name:</td> <td><input type="text" name="city_name" placeholder="City"/></td>
+				</tr>-->
+
 				<tr>
 					<td><i class="material-icons left">assignment_ind</i>Username:</td> <td><input type="text" name="username" placeholder="Username"/></td>
+					<td><i class="material-icons left">https</i>Password:</td> <td><input type="password" name="password" placeholder="Password"/></td>
+					<td ><button class="waves-effect waves-light btn" type="submit" name="btn-save"><i class="material-icons left">person_add</i><strong>SAVE</strong></button></td>
+				</tr>	
+
+				<!--<tr>
+					<td><i class="material-icons left">https</i>Password:</td> <td><input type="password" name="password" placeholder="Password"/></td>
 				</tr>	
 
 				<tr>
-					<td><i class="material-icons left">https</i>Password:</td> <td><input type="password" name="password" placeholder="Password"/></td>
-				</tr>		
-
-				<tr>
 					<td ><button class="waves-effect waves-light btn" type="submit" name="btn-save"><i class="material-icons left">person_add</i><strong>SAVE</strong></button></td>					
-				</tr>
+				</tr>-->
 
 				<tr>
 					<td><a href = "login.php">LogIn</td>

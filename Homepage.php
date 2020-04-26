@@ -19,6 +19,7 @@
 	        		<div class="card-action">
 			          <a class="waves-effect waves-light btn" href="lab1.php"><i class="material-icons left">person_add</i>Add A New User</a>
 			          <a class="waves-effect waves-light btn" href="viewAll.php"><i class="material-icons left">contacts</i>View All Users</a>
+			          <a class="waves-effect waves-light btn" href="login.php"><i class="material-icons left">person</i>LogIn</a>
 	        		</div>
 	      		</div>
 	    	</div>
