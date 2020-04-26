@@ -1,5 +1,6 @@
 <?php
 	include "Crud.php";
+	include "authenticator.php";
 	include_once "DBConnector.php";
 
 	class User implements Crud{
@@ -8,14 +9,48 @@
 		private $last_name;
 		private $city_name;
 
+		private $username;
+		private $password;
+
 		//We can use the class constructor to initialize our values member variables can't be instantiated from elsewhere; they're private
 
-		function __construct($first_name,$last_name,$city_name){
+		function __construct($first_name,$last_name,$city_name,$username,$password){
 			$this -> first_name = $first_name;
 			$this -> last_name = $last_name;
 			$this -> city_name = $city_name;
+
+			$this -> username=$username;
+			$this -> password = $password;
 		}
 
+		//PHP doesn't allow multiple constructors, so we fake one. Because when we login, we don't have all details, we can only have username & password & we still need to use the same class. We make this method static so that we access it with the class rather than an object
+
+		//static constructor
+		public static function create(){
+			$instance = new self();
+			return $instance;
+		}
+
+		//username setter
+		public function setUsername($username){
+			$this -> username = $username;
+		}
+
+		//username getter
+		public function getUsername(){
+			return $this-> username;
+		}
+
+		//password setter
+		public function setPassword($password){
+			$this -> password = $password;
+		}
+
+		//password getter
+		public function getPassword(){
+			return $this -> password;
+		}
+		
 		//user id setter
 		public function setUserId($user_id){
 			$this -> user_id = $user_id;
