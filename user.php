@@ -27,7 +27,8 @@
 
 		//static constructor
 		public static function create(){
-			$instance = new self();
+			$instance = new self($first_name,$last_name,$city_name,$username,$password);//I've added the variables here althought the original code was to be $instance= new self();
+			//but if i used the original code, I got an error saying too few arguments were passed and exactly 5 were expected
 			return $instance;
 		}
 
