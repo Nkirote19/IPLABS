@@ -66,8 +66,10 @@
 			$ln=$this->last_name;
 			$city=$this->city_name;
 			$uname = $this->username;
-			$this -> hashPassword();
-			$pass = hashPassword();
+			
+			$this->hashPassword();
+			$pass = $this->password;			
+			
 			$conn =new DBConnector;
 			$res = mysqli_query($conn->conn,"INSERT INTO user(first_name,last_name,user_city,username,password) VALUES ('$fn','$ln','$city','$uname','$pass')") or die ("Error" .mysql_error());
 			return $res;
@@ -100,7 +102,7 @@
 			$fn = $this->first_name;
 			$ln = $this->last_name;
 			$city = $this->city_name;
-			if($if == "" || $ln == "" || $city == ""){
+			if($fn == "" || $ln == "" || $city == ""){
 				return false;
 			}
 			return true;
@@ -113,7 +115,7 @@
 
 		public function hashPassword(){
 			//inbuilt function password_hash hashes our password
-			$this -> password = password_hash($this-> passord, PASSWORD_DEFAULT);
+			$this -> password = password_hash($this-> password, PASSWORD_DEFAULT);
 		}
 
 		public function isPassWordCorrect(){

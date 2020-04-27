@@ -10,6 +10,9 @@
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
 		$city = $_POST['city_name'];
+		//I've added the 2 below on 27/04/2020 9.37 to test
+		$username=$_POST['username'];
+		$password=$_POST['password'];
 
 		//create user object
 		//Note how we create the object using constructor that will be used to initialize your variables
