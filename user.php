@@ -76,9 +76,23 @@
 			return $res;
 		}
 
+		public function isUserExist(){
+			$uname = $this->username;
+			$conn = new DBConnector;
+			$found = false;
+			$res = mysqli_query($conn->conn,"SELECT * FROM user") or die ("Error" .mysql_error());
+
+			while($row = mysqli_fetch_array($res)){
+				if($row['username'] == $uname){
+					$found = true;
+				}
+			}
+			$conn -> closeDatabase();
+			return $found;
+		}
+
 		public function readAll(){
-			$conn =new DBConnector;
-			
+			$conn =new DBConnector;			
 			$query = mysqli_query($conn->conn,"SELECT * FROM user") or die ("Error" .mysql_error());
 			return $query;
 		}
@@ -153,6 +167,7 @@
 			session_destroy();
 			header("Location:lab1.php");
 		}
+
 
 	}
 ?>

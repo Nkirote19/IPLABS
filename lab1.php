@@ -18,19 +18,34 @@
 		//Note how we create the object using constructor that will be used to initialize your variables
 		//$user = new User($first_name,$last_name,$city);
 		$user = new User($first_name,$last_name,$city,$username,$password);
+
 		if(!$user->valiteForm()){
 			$user->createFormErrorSessions();
 			header("Refresh:0");
 			die();
 		}
 
-		$res = $user -> save();
+		/*$res = $user -> save();
 		//We check if the operation save occurred successfully
 		if ($res){
 			echo "Save operation was successful";
 		}else{
 			echo "An error occurred!";
+		}*/
+
+		if (!$user->isUserExist()){
+			$res = $user -> save();
+
+			if ($res){
+				echo "Save operation was successful";
+			}else{
+				echo "An error occurred!";
+			}
 		}
+			else{
+				echo "The username already exists";
+			}
+		
 	}
 ?>
 
