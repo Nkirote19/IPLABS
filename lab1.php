@@ -19,19 +19,21 @@
 		//$user = new User($first_name,$last_name,$city);
 		$user = new User($first_name,$last_name,$city,$username,$password);
 
+//create object for file uploading
+		$uploader = new FileUploader;//sth is missing here REMEMBER TO ADD
+
+
 		if(!$user->valiteForm()){
 			$user->createFormErrorSessions();
 			header("Refresh:0");
 			die();
 		}
 
-		/*$res = $user -> save();
-		//We check if the operation save occurred successfully
-		if ($res){
-			echo "Save operation was successful";
-		}else{
-			echo "An error occurred!";
-		}*/
+	//call uploadFile() function which returns
+		$file_upload_response = $uploader->uploadFile();
+
+
+		//We check if the operation save occurred successfully	
 
 		if (!$user->isUserExist()){
 			$res = $user -> save();
