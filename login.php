@@ -32,7 +32,7 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
 
-	<body style="background-image:url('https://video-images.vice.com/articles/5d44c9622980b0000824a7e3/lede/1564789576071-GettyImages-949118068.jpeg?crop=1xw:0.8419xh;0xw,0.1581xh');background-size: cover;">
+	<body style="background-image:url('bg.png');background-size: cover;">
 	<div class="row">
 		<div class="col s12 m9"> 
 			<div class="card" style="margin-left:40%!important;margin-top:10%!important;">	
