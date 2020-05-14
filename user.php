@@ -8,7 +8,6 @@
 		private $first_name;
 		private $last_name;
 		private $city_name;
-
 		private $username;
 		private $password;
 

@@ -101,8 +101,14 @@
 				</div>
 			</div>
 		</div>
+
 		<script type="text/javascript" src="validate.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
+
+		<!--include jquery here. cnd network is used-->
+		<script src= "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<!--your new js file comes after including your jquery-->
+		<script type="text/javascript" src="timezone.js"></script>
 
 	</body>
 </html>
