@@ -1,6 +1,7 @@
 <?php
 	include_once 'DBConnector.php';
 	include_once 'user.php';
+	include_once 'fileUploader.php';
 
 	$conn = new DBConnector; //DB connection is made
 
@@ -13,11 +14,12 @@
 		//I've added the 2 below on 27/04/2020 9.37 to test
 		$username=$_POST['username'];
 		$password=$_POST['password'];
-
+		$image = $_FILES['fileToUpload']['name'];
+		$image_name  = $_FILES['fileToUpload']['tmp_name'];
 		//create user object
 		//Note how we create the object using constructor that will be used to initialize your variables
 		//$user = new User($first_name,$last_name,$city);
-		$user = new User($first_name,$last_name,$city,$username,$password);
+		$user = new User($first_name,$last_name,$city,$username,$password,$image);
 
 //create object for file uploading
 		$uploader = new FileUploader;//sth is missing here REMEMBER TO ADD
@@ -30,7 +32,7 @@
 		}
 
 	//call uploadFile() function which returns
-		$file_upload_response = $uploader->uploadFile();
+		$file_upload_response = $uploader->uploadFile($image_name,$image);
 
 
 		//We check if the operation save occurred successfully	
@@ -65,7 +67,7 @@
 			<div class="col s12 m11"> 
 				<div class="card" style="margin-left:10%!important;margin-top:10%!important;">			
 			
-		<form method="post" name="user_details" id="user_details" onsubmit="return validateForm()" action="<?=$_SERVER['PHP_SELF']?>">
+		<form enctype="multipart/form-data" method="post" name="user_details" id="user_details" onsubmit="return validateForm()" action="<?=$_SERVER['PHP_SELF']?>">
 			<a class="waves-effect waves-light btn-small" href="Homepage.php"><i class="material-icons left">navigate_before</i></a>
 			<p class="card-title center"><b>User's Details Form</b></p>
 			<table align="center"style="width:95%!important;">

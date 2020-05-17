@@ -1,20 +1,23 @@
 <?php
 class FileUploader{
 	/*Member Variables*/
-	private static $target_directory = "uploads/";
+	private  $target_directory = "uploads/";
 	private static $size_limit = 50000; /*size in bytes*/
 	private $uploadOk = false;
 	private $file_original_name;
 	private $file_type;
 	private $file_size;
 	private $final_file_name;
+	private $target_file;
+
+
 
 	/*getters and setters*/
 	public function setOriginalName($name){
 		$this->file_original_name = $name;
 	}
 	public function getOriginalName(){
-		return $this->
+		//return $this->
 	}
 	public function setFileType($type){
 		$this->file_type = $type;
@@ -35,7 +38,14 @@ class FileUploader{
 		return $this->final_file_name;
 	}
 	/*methods*/
-	public function uploadFile(){}
+	public function uploadFile($image_name, $image){
+		$conn = new DBConnector;
+move_uploaded_file($image_name,$this->target_directory.$image);
+
+
+		
+	}
+
 	public function fileAlreadyExists(){}
 	public function saveFilePathTo(){}
 	public function moveFile(){}
