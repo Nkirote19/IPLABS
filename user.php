@@ -13,7 +13,7 @@
 		private $image;
 		//We can use the class constructor to initialize our values member variables can't be instantiated from elsewhere; they're private
 
-		function __construct($first_name,$last_name,$city_name,$username,$password,$image){
+		function __construct($first_name,$last_name,$city_name,$username,$password,$image,$utc_timestamp,$offset){
 			$this -> first_name = $first_name;
 			$this -> last_name = $last_name;
 			$this -> city_name = $city_name;
@@ -21,6 +21,9 @@
 			$this -> username=$username;
 			$this -> password = $password;
 			$this-> image=$image;
+
+			$this-> utc_timestamp = $utc_timestamp;
+			$this-> offset = $offset;
 		}
 
 		//PHP doesn't allow multiple constructors, so we fake one. Because when we login, we don't have all details, we can only have username & password & we still need to use the same class. We make this method static so that we access it with the class rather than an object
@@ -61,6 +64,26 @@
 		public function getUserId()	{
 			return $this -> $user_id;
 		}
+
+
+public function getUtc_timestamp(){
+			return $this-> utc_timestamp;
+		}
+
+		//password setter
+		public function setUtc_timestamp($password){
+			$this -> utc_timestamp = $utc_timestamp;
+		}
+		public function getOffset(){
+			return $this-> offset;
+		}
+
+		//password setter
+		public function setOffset($password){
+			$this -> offset = $offset;
+		}
+
+
 
 		public function save(){
 			$fn = $this->first_name;

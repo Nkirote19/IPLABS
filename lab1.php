@@ -16,13 +16,18 @@
 		$password=$_POST['password'];
 		$image = $_FILES['fileToUpload']['name'];
 		$image_name  = $_FILES['fileToUpload']['tmp_name'];
+
+$utc_timestamp = $_POST['utc_timestamp'];
+$offset = $_POST['time_zone_offset'];
+
+
 		//create user object
 		//Note how we create the object using constructor that will be used to initialize your variables
 		//$user = new User($first_name,$last_name,$city);
 		$user = new User($first_name,$last_name,$city,$username,$password,$image);
 
-//create object for file uploading
-		$uploader = new FileUploader;//sth is missing here REMEMBER TO ADD
+		//create object for file uploading
+		$uploader = new FileUploader;
 
 
 		if(!$user->valiteForm()){
@@ -100,6 +105,12 @@
 
 				<tr>
 					<td ><button class="waves-effect waves-light btn" type="submit" name="btn-save"><i class="material-icons left">person_add</i><strong>SAVE</strong></button></td>
+
+
+					<!--Create hidden controls to store client utc date and time zone-->
+					<input type="hidden" name="utc_timestamp" id="utc_timestamp" value=""/>
+					<input type="hidden" name="time_zone_offset" id="time_zone_offset" value=""/>
+
 					<td class="card-action"><a href = "login.php">LogIn</td>
 				</tr>
 			</table>
