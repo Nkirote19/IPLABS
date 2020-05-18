@@ -40,10 +40,7 @@ class FileUploader{
 	/*methods*/
 	public function uploadFile($image_name, $image){
 		$conn = new DBConnector;
-move_uploaded_file($image_name,$this->target_directory.$image);
-
-
-		
+	move_uploaded_file($image_name,$this->target_directory.$image);		
 	}
 
 	public function fileAlreadyExists(){}
