@@ -11,6 +11,8 @@
 		private $username;
 		private $password;
 		private $image;
+		private $utc_timestamp;
+		private $offset;
 		//We can use the class constructor to initialize our values member variables can't be instantiated from elsewhere; they're private
 
 		function __construct($first_name,$last_name,$city_name,$username,$password,$image,$utc_timestamp,$offset){
@@ -22,8 +24,8 @@
 			$this -> password = $password;
 			$this-> image=$image;
 
-			$this-> utc_timestamp = $utc_timestamp;
-			$this-> offset = $offset;
+			/*$this-> utc_timestamp = $utc_timestamp;
+			$this-> offset = $offset;*/
 		}
 
 		//PHP doesn't allow multiple constructors, so we fake one. Because when we login, we don't have all details, we can only have username & password & we still need to use the same class. We make this method static so that we access it with the class rather than an object
@@ -93,7 +95,10 @@ public function getUtc_timestamp(){
 			$image = $this->image;
 
 			$this->hashPassword();
-			$pass = $this->password;			
+			$pass = $this->password;
+
+			/*$utc_timestamp = $this->utc_timestamp;
+			$offset = $this->offset;*/		
 			
 			$conn =new DBConnector;
 			$res = mysqli_query($conn->conn,"INSERT INTO user(first_name,last_name,user_city,username,password,image) VALUES ('$fn','$ln','$city','$uname','$pass', '$image')") or die ("Error" .mysql_error());

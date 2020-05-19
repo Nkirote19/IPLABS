@@ -17,7 +17,7 @@ class FileUploader{
 		$this->file_original_name = $name;
 	}
 	public function getOriginalName(){
-		//return $this->
+		return $this->file_original_name;
 	}
 	public function setFileType($type){
 		$this->file_type = $type;

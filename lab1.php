@@ -11,24 +11,16 @@
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
 		$city = $_POST['city_name'];
-		//I've added the 2 below on 27/04/2020 9.37 to test
 		$username=$_POST['username'];
 		$password=$_POST['password'];
 		$image = $_FILES['fileToUpload']['name'];
 		$image_name  = $_FILES['fileToUpload']['tmp_name'];
+		$utc_timestamp = $_POST['utc_timestamp'];
+		$offset = $_POST['time_zone_offset'];
 
-$utc_timestamp = $_POST['utc_timestamp'];
-$offset = $_POST['time_zone_offset'];
+		$user = new User($first_name,$last_name,$city,$username,$password,$image,$utc_timestamp,$offset);
 
-
-		//create user object
-		//Note how we create the object using constructor that will be used to initialize your variables
-		//$user = new User($first_name,$last_name,$city);
-		$user = new User($first_name,$last_name,$city,$username,$password,$image);
-
-		//create object for file uploading
 		$uploader = new FileUploader;
-
 
 		if(!$user->valiteForm()){
 			$user->createFormErrorSessions();
@@ -36,11 +28,7 @@ $offset = $_POST['time_zone_offset'];
 			die();
 		}
 
-	//call uploadFile() function which returns
 		$file_upload_response = $uploader->uploadFile($image_name,$image);
-
-
-		//We check if the operation save occurred successfully	
 
 		if (!$user->isUserExist()){
 			$res = $user -> save();
