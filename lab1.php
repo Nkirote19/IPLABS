@@ -13,14 +13,24 @@
 		$city = $_POST['city_name'];
 		$username=$_POST['username'];
 		$password=$_POST['password'];
+
 		$image = $_FILES['fileToUpload']['name'];
-		$image_name  = $_FILES['fileToUpload']['tmp_name'];
+		//$image_name  = $_FILES['fileToUpload']['tmp_name'];
+		$tmp_name  = $_FILES['fileToUpload']['tmp_name'];
+
+		$file_original_name = basename($_FILES['fileToUpload']['name']);
+		$file_type = strtolower(pathinfo($file_original_name,PATHINFO_EXTENSION));
+		$file_size = $_FILES['fileToUpload']['size'];
+		$tmp_name = $_FILES["fileToUpload"]["tmp_name"];
+
 		$utc_timestamp = $_POST['utc_timestamp'];
 		$offset = $_POST['time_zone_offset'];
 
 		$user = new User($first_name,$last_name,$city,$username,$password,$image,$utc_timestamp,$offset);
 
-		$uploader = new FileUploader;
+		//$uploader = new FileUploader;
+		//$uploader = new FileUploader($file_original_name,$file_type,$file_size,$image);
+		$uploader = new FileUploader($file_original_name,$file_type,$file_size,$tmp_name,$image);
 
 		if(!$user->valiteForm()){
 			$user->createFormErrorSessions();
@@ -28,7 +38,7 @@
 			die();
 		}
 
-		$file_upload_response = $uploader->uploadFile($image_name,$image);
+		$file_upload_response = $uploader->uploadFile($tmp_name,$image);
 
 		if (!$user->isUserExist()){
 			$res = $user -> save();
@@ -44,6 +54,22 @@
 			}
 		
 	}
+	/*$check = $uploader->moveFile();
+		if($check == "")
+		{
+			$res = $user->save();
+			$username = $user->getUsername();
+			$file_upload_response = $uploader->uploadFile($conn,$username);
+			if($res && $file_upload_response)
+			{
+				echo "Save operation was successful";
+			}
+		}
+		else
+		{
+			echo $check;
+		}
+	}*/
 ?>
 
 <html>
