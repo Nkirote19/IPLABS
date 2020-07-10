@@ -16,13 +16,13 @@
 		//We can use the class constructor to initialize our values member variables can't be instantiated from elsewhere; they're private
 
 		function __construct($first_name,$last_name,$city_name,$username,$password,$image,$utc_timestamp,$offset){
-			$this -> first_name = $first_name;
-			$this -> last_name = $last_name;
-			$this -> city_name = $city_name;
+			$this ->first_name = $first_name;
+			$this ->last_name = $last_name;
+			$this ->city_name = $city_name;
 
-			$this -> username=$username;
-			$this -> password = $password;
-			$this-> image=$image;
+			$this ->username=$username;
+			$this ->password = $password;
+			$this->image=$image;
 
 			/*$this-> utc_timestamp = $utc_timestamp;
 			$this-> offset = $offset;*/
@@ -32,7 +32,7 @@
 
 		//static constructor
 		public static function create(){
-			$instance = new self($first_name,$last_name,$city_name,$username,$password);//I've added the variables here althought the original code was to be $instance= new self();
+			$instance = new self($first_name,$last_name,$city_name,$username,$password,$image,$utc_timestamp,$offset);//I've added the variables here althought the original code was to be $instance= new self();
 			//but if i used the original code, I got an error saying too few arguments were passed and exactly 5 were expected
 			return $instance;
 		}

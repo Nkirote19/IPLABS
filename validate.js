@@ -6,7 +6,7 @@ function validateForm(){
 	var lname = document.forms["user_details"]["last_name"].value;
 	var city = document.forms["user_details"]["city_name"].value;
 //note user_details is the name of our form
-	if(fname == null || lname == || city == ""){
+	if(fname == null || lname == null || city == null){
 		alert("all details that are required were not suppllied");
 		return false;
 	}

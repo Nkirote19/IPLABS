@@ -1,4 +1,3 @@
-
 $(document).ready(function()
 {
 	$('#api-key-btn').click(function(event)
@@ -9,10 +8,10 @@ $(document).ready(function()
 		}
 		$.ajax({
 			url:"apikey.php",
-			type: "post",
+			dataType: "json",
 			success: function(data){
 				if (data['success'] == 1){
-					$('#api_key').val(data['message']);
+					$('#api-key').val(data['message']);
 				}else{
 					alert("Something went wrong. Please try again");
 				}

@@ -20,4 +20,22 @@ $(document).ready(function(){
 			}
 		});
 	});
-})
+	$('#btn-check-status').click(function(event) {
+		event.preventDefault();
+
+		var order_id = $('#order_id').val();
+
+		$.ajax({
+			url: "http://localhost/IPLABS/api/v1/orders/index.php",
+			type: "get",
+			data: { order_id:order_id },
+			headers: {'Authorization':'Basic m8Qgm3ceLycXH6aZoH9n6yRTkqtwBBi4IQcAo7gdr6Fd9DLquVnp6xGP4AUF6gol'},
+			success: function (data) {
+				alert(data['message']);
+			},
+			error: function() {
+				alert("An error occurred");
+			}
+		});
+	});
+});

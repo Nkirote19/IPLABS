@@ -11,43 +11,43 @@
 		/*getters and setters*/
 
 		public function setMealName($meal_name){
-			$this -> meal_name = $meal_name;
+			$this ->meal_name = $meal_name;
 		}
 
 		public function getMealName(){
-			return $this -> meal_name;
+			return $this ->meal_name;
 		}
 
 		public function setMealUnits($meal_units){
-			$this -> meal_units = $meal_units;
+			$this ->meal_units = $meal_units;
 		}
 
 		public function getMealUnits (){
-			return $this -> meal_units;
+			return $this ->meal_units;
 		}
 
 		public function setUnitPrics($unit_price){
-			$this -> unit_price = $unit_price;
+			$this ->unit_price = $unit_price;
 		}
 
 		public function getUnitPrice(){
-			return $this -> unit_price;
+			return $this ->unit_price;
 		}
 
 		public function setStatus($status){
-			$this -> status = $status ;
+			$this ->status = $status ;
 		}
 
 		public function getStatus($status){
-			return $this -> status;
+			return $this ->status;
 		}
 
 		public function setUserApiKey($key){
-			$this -> user_api_key = $key;
+			$this ->user_api_key = $key;
 		}
 
 		public function getUserApiKey(){
-			return $this -> user_api_key;
+			return $this ->user_api_key;
 		}
 
 		public function createOrder(){
@@ -58,17 +58,25 @@
 			return $res;
 		}
 
-		public function checkOrderStatus(){
+		public function checkOrderStatus($id)
+	{
+		$con = new DBConnector();
+		$order = mysqli_query($con->conn, "SELECT * FROM orders WHERE order_id = '$id' ")->fetch_assoc();
 
-		}
+		return $order['order_status'];
+	}
 
 		public function fetchAllOrders(){
 
 		}
 
-		public function checkApiKey(){
-			return true;
-		}
+		public function checkApiKey()
+	{
+		$con = new DBConnector();
+		$api = mysqli_query($con->conn, "SELECT * FROM api_keys WHERE api_key = '$this->user_api_key' ");
+
+		return $api;
+	}
 
 		public function checkContentType(){
 			

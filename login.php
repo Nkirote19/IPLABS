@@ -14,7 +14,6 @@
 
 		if($instance-> isPassWordCorrect()){
 			$instance->login();
-
 			$conn -> closeDatabase();
 			$instance->createUserSession();
 		}else{
