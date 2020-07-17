@@ -28,7 +28,7 @@ $(document).ready(function () {
    type: "get",
    url: "http://localhost/IPLABS/api/v1/orders/index.php",
    data: { order_id: order_id },
-   headers: { 'Authorization': 'Basic m8Qgm3ceLycXH6aZoH9n6yRTkqtwBBi4IQcAo7gdr6Fd9DLquVnp6xGP4AUF6gol' },
+   headers: { 'Authorization': 'Basic GnPG7rYUjnG41q6COS9vxL37DfNx428U02GRplLSwh30Dz4PB57oQLUwzVYLQj38' },
    success: function (data) {
     alert(data['message']);
    },
