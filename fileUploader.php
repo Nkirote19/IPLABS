@@ -1,117 +1,181 @@
-<?php
-class FileUploader{
-	/*Member Variables*/
-	private  $target_directory = "uploads/";
-	private $size_limit = 50000; /*size in bytes*/
-	private $uploadOk = false;
-	private $file_original_name;
-	private $file_type;
-	private $file_size;
-	private $final_file_name;
-	private $target_file;
+<?php 
+  include_once "DBConnector.php";
+  
+  class FileUploader{
+   //Member Variables
 
-	//added on 27/05
-	private $tmp_name;
+   private static $target_directory = "uploads/";
+   private static $size_limit = 50000; //Size in bytes
+   private $uploadOk = false;
+   private $file_original_name;
+   private $file_type;
+   private $file_size;
+   private $final_file_name;
+   private $file_path;
+   private $username;
+   public static $extensions = array("jpeg","jpg","png", "jpeg");
 
-	//public function __construct($file_original_name,$file_type,$file_size,$tmp_name)
-	public function __construct($file_original_name,$file_type,$file_size,$tmp_name)
-		{
-			$this->file_original_name = $file_original_name;
-			$this->file_type = $file_type;
-			$this->file_size = $file_size;
-			$this->tmp_name = $tmp_name;
-		}
+   /*Method to access Username*/
+   public function setUsername($username){
+        $this->username = $username;
+   }
 
+   public function getUsername(){
+     return $this->username;
+   }
 
+   /* Getter and Setter Methods */
+   public function setOriginalName($name){
+    $this->file_original_name = $name;
+   }
 
-	/*getters and setters*/
-	public function setOriginalName($file_original_name){
-		$this->file_original_name = $file_original_name;
-	}
-	public function getOriginalName(){
-		return $this->file_original_name;
-	}
-	public function setFileType($file_type){
-		$this->file_type = $file_type;
-	}
-	public function getFileType(){
-		return $this->file_type;
-	}
-	public function setFileSize($file_size){
-		$this->$file_size = $file_size;
-	}
-	public function getFileSize(){
-		return $this->file_size;
-	}
-	public function setFinalFileName($final_file_name){
-		$this->final_file_name = $final_file_name;
-	}
-	public function getFinalFileName(){
-		return $this->final_file_name;
-	}
-	/*methods*/
-	public function uploadFile($image_name, $image){
-		$conn = new DBConnector;
-	move_uploaded_file($image_name,$this->target_directory.$image);		
-	}
+   public function getOriginalName(){
+    return $this->file_original_name;
+   }
 
-	public function fileAlreadyExists(){
-		$name = $this->final_file_name;
-		if(file_exists($name)){
-			$this->uploadOk = true;
-		}
-	}
+   public function setFileType($type){
+     $this->file_type = $type;
+   }
 
-	public function saveFilePathTo(){
-		$this->final_file_name = $this->target_directory.$this->file_original_name;
-	}
+   public function getFileType(){
+     return $this->file_type;
+   }
+
+   public function setFileSize($size){
+    $this->file_size = $size;
+   }
+
+   public function getFileSize(){
+    return $this->file_size;
+   }
+
+   public function setFinalFileName($final_name){
+    $this->final_file_name = $final_name;
+   }
+
+   public function getFinalName(){
+    return $this->final_file_name;
+   }
 
 
-	public function moveFile(){
-		{
-			$this->fileWasSelected();
-			$this->saveFilePathTo();
-			$this->fileAlreadyExists();
-			$this->fileTypeIsCorrect();
-			$this->fileSizeIsCorrect();
-			if ($this->uploadOk == true) 
-			{
-  				$answer = "Image must be jpg/png format, smaller than 50KB and not already existing";
-			}
-			else 
-			{
-  				if (move_uploaded_file($this->tmp_name, $this->final_file_name)) 
-  				{
-  					$answer = "";
-  				} 	
-  				else 	
-  				{
-    				$answer = "Sorry, there was an error uploading your file.";
-  				}
-			}
-			return $answer;
-	}
-}
-	public function fileTypeIsCorrect(){	
-			$type = $this->file_type;
-			if($type != "jpg" && $type != "png")
-			{
-				$this->uploadOk = true;
-			}	
-	}
 
-	public function fileSizeIsCorrect(){
-			$size = $this->file_size;
-			if($size > $this->size_limit)
-			{
-				$this->uploadOk = true;
-			}
-	}
-	public function fileWasSelected(){
-		if($this->file_size == 0)
-			{
-				$this->uploadOk = true;
-			}
-	}
-}
+   /* Class Methods */
+
+   public function uploadFile()
+   {
+      $connect = new DBConnector();
+      $this->moveFile();
+
+      $img_name = $this->getOriginalName();
+      $username = $_SESSION['username'];
+
+      //Send a post to the database if the file has been moved
+      if($this->uploadOk){
+
+        $result_set = mysqli_query($connect->conn, 
+        "UPDATE users SET img_name='$img_name' WHERE username='$username'") or die("Error".mysqli_error());
+
+        /* 
+           We unset the short session instantiation since
+           to distinguish which user is uploading an image
+        */
+
+        unset($_SESSION['username']);
+      }
+
+   }
+
+   public function fileAlreadyExists()
+   {
+     $this->saveFilePathTo();
+
+     $exists_in_dir = false;
+     
+     //Perform check on whether it resides in the file path
+     if(file_exists($this->file_path)){
+        $exists_in_dir = true;
+     }
+
+     return $exists_in_dir;
+
+   }
+
+
+   public function saveFilePathTo()
+   {
+     //Gets the parent directory holding all files
+      $trgt_dir  = self::$target_directory;
+
+      //Fuse the directory to that particular filename
+      $trgt_file = $trgt_dir . basename($this->file_original_name);
+      
+      $this->file_path = $trgt_file;
+   }
+
+   //Positions the file in a local directory 
+   public function moveFile()
+   {
+      $result_set = move_uploaded_file($this->final_file_name, $this->file_path);
+
+      if($result_set){
+        $this->uploadOk=true;
+      }
+
+      return $this->uploadOk;
+     
+   }
+
+
+   //Checks whether file is of  type extensions available
+   public function fileTypeIsCorrect()
+   {
+      $extensions = array("jpeg","jpg","png", "jpeg");
+
+      $of_type_extensions = false;
+
+      $type = $this->file_type;
+
+      if(in_array($type, $extensions)){
+        $of_type_extensions = true;
+      }
+
+      return $of_type_extensions;
+   }
+
+
+   public function fileSizeIsCorrect()
+   {
+      $size_OK = false;
+      $limit = self::$size_limit;
+
+      if($this->file_size < 5000000000){
+        $size_OK = true;
+
+        return $size_OK;
+      }
+
+      return $size_OK;
+
+   }
+
+   public function fileWasSelected()
+   {
+      $selected = false;
+
+      if($this->file_original_name){
+        $this->uploadOk = true;
+        $selected  = true; 
+        return $selected;
+      }
+
+      return $selected;
+
+   }
+
+
+  }
+
+
+
+
 ?>

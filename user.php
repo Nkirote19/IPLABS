@@ -1,202 +1,271 @@
 <?php
-	include "Crud.php";
-	include "authenticator.php";
-	include_once "DBConnector.php";
+ include "Crud.php";
+ include_once "DBconnector.php";
+ include "authenticator.php";
 
-	class User implements Crud, authenticator{
-		private $user_id;
-		private $first_name;
-		private $last_name;
-		private $city_name;
-		private $username;
-		private $password;
-		private $image;
-		private $utc_timestamp;
-		private $offset;
-		//We can use the class constructor to initialize our values member variables can't be instantiated from elsewhere; they're private
+ class User implements Crud, Authenticator{
+   private $user_id;
+   private $first_name;
+   private $last_name;
+   private $user_city;
 
-		function __construct($first_name,$last_name,$city_name,$username,$password,$image,$utc_timestamp,$offset){
-			$this ->first_name = $first_name;
-			$this ->last_name = $last_name;
-			$this ->city_name = $city_name;
+   private $username;
+   private $password;
 
-			$this ->username=$username;
-			$this ->password = $password;
-			$this->image=$image;
+   private $tmzn_off;
+   private $utc_timestamp;
 
-			/*$this-> utc_timestamp = $utc_timestamp;
-			$this-> offset = $offset;*/
-		}
+   public function __construct($first_name, $last_name, $user_city, $username, $password){
+      $this->first_name = $first_name;
+      $this->last_name = $last_name;
+      $this->user_city = $user_city;
+    
+      $this->username = $username;
+      $this->password = $password;
+ }  
 
-		//PHP doesn't allow multiple constructors, so we fake one. Because when we login, we don't have all details, we can only have username & password & we still need to use the same class. We make this method static so that we access it with the class rather than an object
+    
+  public static function create(){
+    $instance = new ReflectionClass(__CLASS__);
 
-		//static constructor
-		public static function create(){
-			$instance = new self($first_name,$last_name,$city_name,$username,$password,$image,$utc_timestamp,$offset);//I've added the variables here althought the original code was to be $instance= new self();
-			//but if i used the original code, I got an error saying too few arguments were passed and exactly 5 were expected
-			return $instance;
-		}
+    return $instance->newInstanceWithoutConstructor();
+  }
 
-		//username setter
-		public function setUsername($username){
-			$this -> username = $username;
-		}
+  public function setUsername($username){
+      $this->username = $username;
+  }
 
-		//username getter
-		public function getUsername(){
-			return $this-> username;
-		}
+  public function getUsername(){
+      return $this->username;
+  }
+  
+  public function setPassword($password){
+    $this->password = $password;
+  }
 
-		//password setter
-		public function setPassword($password){
-			$this -> password = $password;
-		}
-
-		//password getter
-		public function getPassword(){
-			return $this -> password;
-		}
-
-		//user id setter
-		public function setUserId($user_id){
-			$this -> user_id = $user_id;
-		}
-
-		//user id getter
-		public function getUserId()	{
-			return $this -> $user_id;
-		}
+  public function getPassword(){
+      return $this->password;
+  }
 
 
-public function getUtc_timestamp(){
-			return $this-> utc_timestamp;
-		}
+  public function getUserId()
+    {
+        return $this->user_id;
+    }
 
-		//password setter
-		public function setUtc_timestamp($password){
-			$this -> utc_timestamp = $utc_timestamp;
-		}
-		public function getOffset(){
-			return $this-> offset;
-		}
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+    }
 
-		//password setter
-		public function setOffset($password){
-			$this -> offset = $offset;
-		}
+    /* Setter and Getter for the time_zone_offset and utc_timestamp */
 
 
 
-		public function save(){
-			$fn = $this->first_name;
-			$ln=$this->last_name;
-			$city=$this->city_name;
-			$uname = $this->username;
-			$image = $this->image;
+    //time_zone_offset (Set and Get)
 
-			$this->hashPassword();
-			$pass = $this->password;
+    public function getTimezoneOffset()
+    {
+        return $this->tmzn_off;
+    }
 
-			/*$utc_timestamp = $this->utc_timestamp;
-			$offset = $this->offset;*/		
-			
-			$conn =new DBConnector;
-			$res = mysqli_query($conn->conn,"INSERT INTO user(first_name,last_name,user_city,username,password,image) VALUES ('$fn','$ln','$city','$uname','$pass', '$image')") or die ("Error" .mysql_error());
-			return $res;
-		}
-
-		public function isUserExist(){
-			$uname = $this->username;
-			$conn = new DBConnector;
-			$found = false;
-			$res = mysqli_query($conn->conn,"SELECT * FROM user") or die ("Error" .mysql_error());
-
-			while($row = mysqli_fetch_array($res)){
-				if($row['username'] == $uname){
-					$found = true;
-				}
-			}
-			$conn -> closeDatabase();
-			return $found;
-		}
-
-		public function readAll(){
-			$conn =new DBConnector;			
-			$query = mysqli_query($conn->conn,"SELECT * FROM user") or die ("Error" .mysql_error());
-			return $query;
-		}
-		public function readUnique(){
-			return null;
-		}
-		public function search(){
-			return null;
-		}
-		public function update(){
-			return null;
-		}
-		public function removeOne(){
-			return null;
-		}
-		public function removeAll(){
-			return null;
-		}
-
-		public function valiteForm(){
-			//return true if the values are not empty
-			$fn = $this->first_name;
-			$ln = $this->last_name;
-			$city = $this->city_name;
-			if($fn == "" || $ln == "" || $city == ""){
-				return false;
-			}
-			return true;
-		}
-
-		public function createFormErrorSessions(){
-			session_start();
-			$_SESSION['form_errors']="All fields are required";
-		}
-
-		public function hashPassword(){
-			//inbuilt function password_hash hashes our password
-			$this -> password = password_hash($this-> password, PASSWORD_DEFAULT);
-		}
-
-		public function isPassWordCorrect(){
-			$conn = new DBConnector;
-			$found = false;
-			$res = mysqli_query($conn->conn,"SELECT * FROM user") or die ("Error" .mysql_error());
-
-			while ($row = mysqli_fetch_array($res)){
-				if(password_verify($this -> getPassword(), $row['password']) && $this -> getUsername() == $row['username']){
-					$found = true;
-				}
-			}
-			//close DB Connection
-			$conn -> closeDatabase();
-			return $found;
-			//return true;
-		}
-
-		public function login(){
-			if ($this -> isPasswordCorrect()){
-				//password is correct, so we load the protected page
-				header("Location:private_page.php");
-			}
-		}
-
-		public function createUserSession(){
-			session_start();
-			$_SESSION['username'] = $this -> getUsername();
-		}
-
-		public function logout(){
-			session_start();
-			unset($_SESSION['username']);
-			session_destroy();
-			header("Location:lab1.php");
-		}
+    public function setTimezoneOffset($tMzOffset)
+    {
+        $this->tmzn_off = $tMzOffset;
+    }
 
 
-	}
+    //Utc_timestamp (Set and Get)
+    public function getUtcTimestamp()
+    {
+        return $this->utc_timestamp;
+    }
+
+    public function setUtcTimestamp($utc_timestamp)
+    {
+        $this->utc_timestamp = $utc_timestamp;
+    }
+
+    public function save(){
+     $connect = new DBConnector();
+     $fn = $this->first_name;
+     $ln = $this->last_name;
+     $city = $this->user_city;
+     $tMzOffset = $this->getTimezoneOffset();
+     $utc_tmstp = $this->getUtcTimestamp();
+     
+     $this->hashPassword();
+     $uname = $this->username;
+     $pass_wrd = $this->password;
+    
+     $res = mysqli_query($connect->conn,"INSERT INTO users (first_name, last_name, user_city, username, password, created_time, offset) VALUES ('$fn', '$ln', '$city', '$uname', '$pass_wrd', 'utc_tmstp', '$tMzOffset')");
+     return $res;
+     
+     $connect->closeDatabase();
+
+     return $res;
+    }
+
+      public function readAll()
+    { 
+      $connect = new DBConnector();
+      $res_set = mysqli_query($connect->conn,"SELECT * FROM users");
+      
+      if(mysqli_num_rows($res_set) > 0)
+      {
+        echo "<table align='center' border='0px' style='width:700px; line-height:40px;'>";
+          echo "<t>";
+              echo "<th style='width:50px;'>"; echo "ID"; echo "</th>";
+              echo "<th style='width:50px;'>"; echo "First Name"; echo "</th>";
+              echo "<th style='width:50px;'>"; echo "Last Name"; echo "</th>";
+              echo "<th style='width:50px;'>"; echo "City"; echo "</th>";
+              echo "<th style='width:90px;'>"; echo "Username"; echo "</th>";
+             
+        while($row= mysqli_fetch_assoc($res_set))
+        {
+          
+          echo "</t>";
+            echo "<tr>";
+                echo "<td>";
+                    echo $row['id'];
+                echo "</td>";
+                echo "<td>";
+                    echo $row['first_name'];
+                echo "</td>";
+                echo "<td>";
+                    echo $row['last_name'];
+                echo "</td>";
+                echo "<td>";
+                    echo $row['user_city'];
+                echo "</td>";
+                 echo "<td>";
+                    echo $row['username'];
+                echo "</td>";
+                
+            echo "</tr>";
+          
+          
+        }
+      echo "</table>";
+        
+      }else{
+          echo "0 results";
+      }  
+        
+    }
+
+     public function readUnique()
+    {
+        // TODO: Implement readUnique() method.
+    }
+
+    public function search()
+    {
+        // TODO: Implement search() method.
+    }
+
+    public function update()
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function removeOne()
+    {
+        // TODO: Implement removeOne() method.
+    }
+
+    public function removeAll()
+    {
+        // TODO: Implement removeAll() method.
+    }
+
+    public function validateForm(){
+        $fn = $this->first_name;
+        $ln = $this->last_name;
+        $city = $this->user_city;
+        $username = $this->username;
+        $password= $this->password;
+
+        if($fn == "" || $ln == "" || $city == "" || $password =="" || $username=="" ||$this->isUserExist()){
+            return false;
+        }
+
+        return true;
+    }
+
+    public function createFormErrorSessions(){
+        session_start();
+                
+        $_SESSION['form_errors'] = "All Fields are required"; 
+        
+        if($this->isUserExist()){
+             $_SESSION['exists'] = "This Username is already in use";
+        }
+    }
+
+    public function hashPassword(){
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+    }
+
+    public function isPasswordCorrect(){
+        $con = new DBConnector;
+        $found  = false;
+        $res = mysqli_query($con->conn, "SELECT * FROM users" );
+
+        while($row=mysqli_fetch_assoc($res))
+        {
+            if (password_verify($this->password, $row['password']) && $this->getUsername()==$row['username']){
+                $found = true;
+            }
+        }
+
+        $con->closeDatabase();
+
+        return $found;
+    }
+
+    public function login(){
+       if($this->isPasswordCorrect())
+       {
+           header("Location: private_page.php");
+       }
+    }
+
+    public function createUserSession(){
+        session_start();
+        $_SESSION['username'] = $this->getUsername();
+
+    }
+
+    public function logout(){
+        session_start();
+        unset($_SESSION['username']);
+        session_destroy();
+        header("Location: lab1.php");
+    }
+
+    public function isUserExist(){
+        $con =new  DBConnector;
+        $found = false;
+        $username = $this->username;
+
+        $res_set = mysqli_query($con->conn, "SELECT * FROM users "); 
+
+        while($row = mysqli_fetch_assoc($res_set)){
+            if($username == $row['username']){
+                $found = true;
+                $_SESSION['exists'] = "This Username is already in use";
+                break;
+            }
+        
+        }
+        $con->closeDatabase();
+
+        return $found;
+    }
+
+ }
+
+
+
 ?>

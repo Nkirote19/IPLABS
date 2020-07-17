@@ -1,14 +1,19 @@
-$(document).ready(function()
-		{
-			/*Returns the number of minutes ahead or behind green which meridian*/
-			var offset = new Date().getTimezoneOffset();
-			/*Returns the number of milliseconds since 1970/01/01*/
-			var timestamp = new Date().getTime();
+$(document).ready(function () {
+ /* Returns nummber of minutes ahead or behind green wich meridian*/
 
-			/*We convert our time to : Universal Time Coordinated / Universal Coordinated Time*/
-			var utc_timestamp = timestamp + (60000 * offset);
+ var offset = new Date().getTimezoneOffset();
 
-			$('#time_zone_offset').val(offset);
-			$('#utc_timestamp').val(utc_timestamp);
-		}
-	);
+ /*return number of milliseconds since 1970/01/01:*/
+ var timestamp = new Date().getTime();
+
+ /*Convert our time to universal Time coordinated / Universal Coordinated time */
+
+ var utc_timestamp = timestamp + (60000 * offset);
+
+ //Passing the values to hidden inputs upon form submission
+ $("#submit").click(function (event) {
+  $('#utc_timestamp').val(utc_timestamp);
+  $('#time_zone_offset').val(offset)
+ });
+
+});

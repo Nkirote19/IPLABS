@@ -1,6 +1,7 @@
-<?php 
 
-include_once 'DBConnector.php';
+ <?php 
+
+include_once 'DBconnector.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	header('HTTP/1.0 403 Forbidden');
@@ -26,10 +27,10 @@ function generateApiKey($str_length)
 function saveApiKey($api_key)
 {
 	session_start();
-	$dbcon = new DBConnector();
+	$dbcon = new DBconnector();
 	$user = $_SESSION['username'];
 	$myquery = mysqli_query($dbcon->conn, "SELECT * FROM user WHERE username='$user'");
-	$user_array = $myquery->fetch_assoc();
+	$user_array = mysqli_fetch_assoc($myquery);
 	$uid = $user_array['user_id'];
 	$good = mysqli_query($dbcon->conn, "INSERT INTO api_keys(user_id,api_key) VALUES('$uid','$api_key')") or die(mysqli_error($dbcon->conn));
 	if ($good === true) {
