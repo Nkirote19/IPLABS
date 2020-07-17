@@ -18,7 +18,11 @@
         //i've added username and password so that i can meet the no. of variables needed in the construct
         $username=0;
         $password=0;
-        $user = new User($first_name,$last_name,$city,$username,$password);
+        $image=0;
+        $utc_timestamp=0;
+        $offset=0;
+
+        $user = new User($first_name,$last_name,$city,$username,$password,$image,$utc_timestamp,$offset);
         $res = $user -> readAll();
 
         echo '
@@ -34,6 +38,7 @@
                           <td> <font face="Arial"><b>First Name</b></font> </td> 
                           <td> <font face="Arial"><b>Last Name</b></font> </td> 
                           <td> <font face="Arial"><b>City</b></font> </td> 
+
                         </tr>
                     </div>                    
                 </div>

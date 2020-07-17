@@ -25,6 +25,7 @@
         </div>
         <div class="card-action">
           <a href="logout.php">Logout</a>
+          <a href="private-page.php">API Private Page</a>
         </div>
       </div>
     </div>
